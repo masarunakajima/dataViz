@@ -9,6 +9,10 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 import os,sys
 
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmParameterFilter.ui"
+fpath = path.join(dirname, fname)
 
 
 path =os.getcwd()
@@ -30,7 +34,7 @@ class frmParameterFilter(QtWidgets.QFrame,dataGuiBaseClass):
     sigFilterChanged = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
-        uic.loadUi('frmParameterFilter.ui', self)
+        uic.loadUi(fpath, self)
 
     
         self.lstWidgetList = [getattr(self, n) for n in dir(self) if 'lst' in n]

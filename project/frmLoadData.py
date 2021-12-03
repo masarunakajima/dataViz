@@ -17,6 +17,10 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 import os,sys
 
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmLoadData.ui"
+fpath = path.join(dirname, fname)
 
 path =os.getcwd()
 while len(path)>5:
@@ -41,7 +45,7 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
     sigLoaded = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
-        uic.loadUi('frmLoadData.ui', self)
+        uic.loadUi(fpath, self)
 
         #create shortcut for deselecting for all the lists
         self.lstWidgetList = [getattr(self, n) for n in dir(self) if 'lst' in n]

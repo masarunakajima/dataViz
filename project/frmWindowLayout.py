@@ -9,6 +9,10 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 import os,sys
 
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmWindowLayout.ui"
+fpath = path.join(dirname, fname)
 
 from dataGuiBaseClasses import *
 from constants import *
@@ -19,7 +23,7 @@ class frmWindowLayout(QtWidgets.QFrame,dataGuiBaseClass):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi('frmWindowLayout.ui', self)
+        uic.loadUi(fpath, self)
 
 
         #create shortcut for deselecting for all the lists

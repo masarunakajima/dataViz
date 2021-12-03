@@ -9,7 +9,10 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 
 import os,sys
-
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmMain.ui"
+fpath = path.join(dirname, fname)
 
 from dataGuiBaseClasses import *
 
@@ -32,7 +35,7 @@ class frmMainWindow(QtWidgets.QFrame, dataGuiBaseClass):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi('frmMain.ui', self)
+        uic.loadUi(fpath, self)
 
         dataGuiBaseClass().reset()
 

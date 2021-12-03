@@ -10,6 +10,11 @@ from pyqtgraph import functions as fn
 
 import os,sys
 
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmComAction.ui"
+fpath = path.join(dirname, fname)
+
 path =os.getcwd()
 # while len(path)>5:
     # path = os.path.dirname(path)
@@ -36,7 +41,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
     sigArithmeticsDataAdded = QtCore.pyqtSignal()
     def __init__(self ,displayType='list'):
         super().__init__()
-        uic.loadUi('frmComAction.ui', self)
+        uic.loadUi(fpath, self)
 
         self.displayType = displayType
 

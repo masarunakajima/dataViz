@@ -9,7 +9,12 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 import os,sys
 
-path =os.getcwd()
+from os import path
+dirname = path.dirname(__file__)
+fname = "frmShotChannelTable.ui"
+fpath = path.join(dirname, fname)
+
+# path =os.getcwd()
 # while len(path)>5:
     # path = os.path.dirname(path)
     # dirs = next(os.walk(path))[1]
@@ -28,7 +33,7 @@ class frmShotChannelTable(QtWidgets.QFrame, dataGuiBaseClass):
     sigChannelListDoubleClicked  = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
-        uic.loadUi('frmShotChannelTable.ui', self)
+        uic.loadUi(fpath, self)
 
         self.tblAvailableChannel.itemSelectionChanged.connect(self.updateSelection)
         self.tblAvailableChannel.setSelectionMode(QAbstractItemView.ExtendedSelection)
