@@ -149,7 +149,7 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
       # dirPath = QtWidgets.QFileDialog.getExistingDirectory(None,'Select a "data" directory',\
       # os.path.expanduser("~"),QtWidgets.QFileDialog.ShowDirsOnly)
       home = os.getenv("HOME")
-      default_path = os.path.expanduser("~")
+      default_path = os.path.dirname(dirname)
       if os.path.exists(dirfilename):
         default_path = open(dirfilename).readline()
 
@@ -165,15 +165,13 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
       dirName = os.path.basename(str(dirPath))
       savedir = os.path.dirname(os.path.abspath(dirPath))
       f = open(dirfilename, 'w')
-      f.write(dirPath)
+      f.write(os.path.dirname(dirPath))
       f.close()
       #Test if the path is for 'data' directory
       global DIRNAME
       DIRNAME = dirName
-      if dirName == 'data' or dirName == 'Data':
-          self.listYears(str(dirPath))
       #Test if the path is for 'year' directory
-      elif len(dirName)==4 and dirName.isdigit():
+      if len(dirName)==4 and dirName.isdigit():
           if int(dirName)>2000: #data since 2000
               self.listMonths(str(dirPath))
 
@@ -183,12 +181,15 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
       elif all([x.isdigit() for  x in dirName.split('_')]):
           self.listShots(str(dirPath))
 
+      else:
+          self.listYears(str(dirPath))
     def specificSearch(self):
 
         self.lstYear.clear()
         self.lstMonth.clear()
         self.lstDate.clear()
-        def_path = os.path.expanduser("~")
+        def_path = os.path.join(os.path.dirname(dirname),
+                "sample_data/2016/01_January")
         pathfilename = "shot_dir.txt"
         if os.path.exists(pathfilename):
             temp_path = open(pathfilename).readline()
@@ -202,7 +203,7 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
             return
         self.listShots(str(dirPath))
         with open(pathfilename, 'w') as f:
-            f.write(dirPath)
+            f.write(os.path.dirname(dirPath))
 
 
     def listYears (self,path):
