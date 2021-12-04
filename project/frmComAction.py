@@ -975,14 +975,16 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             for i in indexes:
                 p=ps[i]
                 cItems = p.childItems()
-                availHeight -= cItems[0].height()+cItems[1].height()+pHeightOffset
+                # for j in range(len(cItems)) : 
+                    # print(type(cItems[j]))
+                availHeight -= cItems[0].height()+cItems[2].height()+pHeightOffset
             vUnitHeight = availHeight/totalRows
 
             for i in range(len(indexes)):
                 p=ps[indexes[i]]
                 cItems = p.childItems()
-                p.setMaximumHeight(vUnitHeight*rowSpans[i]+cItems[0].height()+cItems[1].height()+pHeightOffset)
-                p.setMinimumHeight(vUnitHeight*rowSpans[i]+cItems[0].height()+cItems[1].height()+pHeightOffset)
+                p.setMaximumHeight(vUnitHeight*rowSpans[i]+cItems[0].height()+cItems[2].height()+pHeightOffset)
+                p.setMinimumHeight(vUnitHeight*rowSpans[i]+cItems[0].height()+cItems[2].height()+pHeightOffset)
 
     def linkMaxWidth(self,windex,pindexes):
         ##START HERE
@@ -1413,6 +1415,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
     def processFunctionCsd (self,pItem, *args,**kargs):
 
         para1 = pItem.dataParam.reset_index(drop=True).iloc[0]
+        # print(pItem.dataParam.reset_index(drop=True).head())
         para2 = pItem.dataParam.reset_index(drop=True).iloc[1]
         s1 = np.array(pItem.rawData[para1[channelIdKey]])
         s2 = np.array(pItem.rawData[para2[channelIdKey]])

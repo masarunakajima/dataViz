@@ -297,11 +297,11 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
             dataGuiBaseClass.dataList.append(data)
 
         else:
-            mask = dataGuiBaseClass.params[self.shotNumKey].astype(str)!=shotNum
+            mask = dataGuiBaseClass.params[shotNumKey].astype(str)!=shotNum
             dataGuiBaseClass.params = dataGuiBaseClass.params[mask]
             dataGuiBaseClass.params = dataGuiBaseClass.params.append(param)
-            index = [x for x in range(len(dataGuiBaseClass.dataList)) if dataGuiBaseClass.dataList[x][self.shotNumKey]==shotNum][0]
-            data = {self.shotNumKey:shotNum, dfKey:pd.concat(shotDaq.digitizerDataList, axis=1), dfErrKey:pd.DataFrame()}
+            index = [x for x in range(len(dataGuiBaseClass.dataList)) if dataGuiBaseClass.dataList[x][shotNumKey]==shotNum][0]
+            data = {shotNumKey:shotNum, dfKey:pd.concat(shotDaq.digitizerDataList, axis=1), dfErrKey:pd.DataFrame()}
             #dataGuiBaseClass.params.sort(self.shotNumKey,inplace=True).dataList[index]=data
             dataGuiBaseClass.dataList[index]=data
 

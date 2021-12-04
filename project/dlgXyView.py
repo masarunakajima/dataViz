@@ -9,6 +9,10 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 import os,sys
 
+from os import path
+dirname = path.dirname(__file__)
+fname = "dlgXyView.ui"
+fpath = path.join(dirname, fname)
 
 
 path =os.getcwd()
@@ -29,7 +33,7 @@ from constants import *
 class dlgXyView(QtWidgets.QDialog,dataGuiBaseClass):
     def __init__(self):
         super().__init__()
-        uic.loadUi('dlgXyView.ui', self)
+        uic.loadUi(fpath, self)
 
         self.listCbxChannel = [getattr(self, n) for n in dir(self) if 'cbxChannel' in n]
         self.listCbxShotNum = [getattr(self, n) for n in dir(self) if 'cbxShotNum' in n]
