@@ -2139,7 +2139,10 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
                 continue
             for item in table.selectedItems():
                 pindex = int(item.text().split(' ')[-1])
-                regions = [x for x in self.ps[windex][pindex].items if type(x)==type(pg.LinearRegionItem()) and x.orientation ==pg.LinearRegionItem.Vertical]
+
+                regions = [x for x in self.ps[windex][pindex].items if
+                        type(x)==type(pg.LinearRegionItem()) and x.orientation
+                        =="vertical"]
                 for region in regions:
                     xRegions.append(region)
 
