@@ -82,7 +82,11 @@ class frmWindowLayout(QtWidgets.QFrame,dataGuiBaseClass):
             for i in range(table.rowCount()):
                 for j in range(table.columnCount()):
                     table.setItem(i,j,QTableWidgetItem())
-                    table.setSpan(i,j,1,1)
+                    # table.setSpan(i,j,1,1)
+                    # cell_index = table.model().index(i,j)
+                    # print(i,j)
+                    # table.selectionModel().select(cell_index,
+                            # QtCore.QItemSelectionModel.Select)
                         
         if len(self.lstWindow.selectedItems())==1:
             windex = self.lstWindow.selectedIndexes()[0].row()
@@ -103,7 +107,8 @@ class frmWindowLayout(QtWidgets.QFrame,dataGuiBaseClass):
             row,column,rowSpan,columnSpan = locations[i]         
             item = tblPlot.item(row,column)
             item.setText('Plot %i' % i)
-            tblPlot.setSpan(row,column,rowSpan,columnSpan)
+            if rowSpan+columnSpan>2:
+                tblPlot.setSpan(row,column,rowSpan,columnSpan)
             item.setBackground(restOfPenColors[i%len(restOfPenColors)])
             item.setTextAlignment(plotTableAlignment)
             item.setFont(plotTableFont)
