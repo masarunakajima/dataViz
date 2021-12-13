@@ -1,4 +1,9 @@
 
+from frmShotChannel import frmShotChannel
+from frmShotChannelTable import frmShotChannelTable
+from frmWindowLayout import frmWindowLayout
+from frmAction1 import frmAction1
+from dlgXyView import dlgXyView
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QShortcut
 
@@ -8,31 +13,19 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 from pyqtgraph import functions as fn
 
-import os,sys
+import os
+import sys
 
 from os import path
 dirname = path.dirname(__file__)
 fname = "frmComAction.ui"
 fpath = path.join(dirname, fname)
 
-path =os.getcwd()
-# while len(path)>5:
-    # path = os.path.dirname(path)
-    # dirs = next(os.walk(path))[1]
-    # if path not in sys.path:
-        # sys.path.append(path)
-    # for Dir in dirs:
-        # if Dir not in sys.path:
-            # sys.path.append(os.path.join(path,Dir))
+path = os.getcwd()
 
 from dataGuiBaseClasses import *
 from constants import *
 
-from frmShotChannel import frmShotChannel
-from frmShotChannelTable import frmShotChannelTable
-from frmWindowLayout import frmWindowLayout
-from frmAction1 import frmAction1
-from dlgXyView import dlgXyView
 
 
 class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
@@ -355,25 +348,19 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         item.rawData = self.getData(dataParam)
         item.errData = self.getErr(dataParam)
         opts = {}
-        opts['pen']=fn.mkPen(255,255,255,100)
-        opts['brush'] = fn.mkBrush(100,100,100,500)
+        opts['pen']=fn.mkPen(255, 255, 255, 100)
+        opts['brush'] = fn.mkBrush(100, 100, 100, 100)
         opts['size']=1
         item.opts=opts
-
-
-
 
         self.exeProcessFunction(item)
         self.ps[windex][pindex].addItem(item)
         self.ds[windex][pindex].append(item)
         return dindex
 
-
-
-
-
-    def updateYAxis(self,ax,*args,**kargs):
+    def updateYAxis(self, ax, *args, **kargs):
         vb = ax.linkedView()
+        # print (vb.addedItems)
         dataItems = [x for x in vb.addedItems if type(x)==type(pg.PlotDataItem())or type(x)==type(pg.ImageItem())]
         axisArg = axisArgs
         yUnits = np.unique([item.yUnit for item in dataItems])
@@ -384,7 +371,6 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         commonWords = []
         # pgColor = dataItems[0].color
         # color = pg.colorStr(pgColor)
-
 
 
         for word in names[0].replace('(',' ').replace(')',' ').replace('_',' ').replace('-',' ').split(' '):
@@ -510,8 +496,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         # yAxes = [x for x in axes if x.orientation=='left' or x.orientation=='right']
         # xAxes = [x for x in axes if x.orientation == 'bottom']
         # ax = xAxes[0]
-        # font1=QtGui.QFont() 
-        # font1.setPixelSize(20) 
+        # font1=QtGui.QFont()
+        # font1.setPixelSize(20)
         # xAxes[0].tickFont = font1
 
         # for yAxis in yAxes:
@@ -753,7 +739,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             return
         #prepare dataParams
         dataParamList = [dataParam[dataParam.index==i] for i in range(len(dataParam))]
-
+        # from IPython import embed; embed()
         pType = pTypeSpectrogramKey
         dindex = self.addNewImageItem(windex,pindexes[0][0],pType, dataParamList[0],processParam.copy())
 
@@ -771,7 +757,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         self.updateXAxis(plot.getAxis('bottom'))
         self.updateYAxis(plot.getAxis('left'))
-        self.updateYAxis(hist.axis)
+        # self.updateYAxis(hist.axis)
 
 
 
@@ -975,7 +961,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             for i in indexes:
                 p=ps[i]
                 cItems = p.childItems()
-                # for j in range(len(cItems)) : 
+                # for j in range(len(cItems)) :
                     # print(type(cItems[j]))
                 availHeight -= cItems[0].height()+cItems[2].height()+pHeightOffset
             vUnitHeight = availHeight/totalRows
@@ -2231,7 +2217,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     frame = frmComAction()
-    
+
     # app.aboutToQuit.connect(app.deleteLater)
     # Frame = QtWidgets.QFrame()
     # ui = frmLoadData()

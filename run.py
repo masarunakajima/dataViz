@@ -7,10 +7,8 @@ from project.frmMain import *
 
 
 
+def main():
 
-
-
-if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     frame = frmMainWindow()
@@ -21,3 +19,9 @@ if __name__ == "__main__":
     # ui.setupUi(Frame)
     frame.show()
     app.exec_()
+
+
+
+if __name__ == "__main__":
+    main()
+
