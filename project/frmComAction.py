@@ -393,7 +393,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         ax.setLabel(yLabel,units = yUnit,**axisArg['labelStyleArgs'])
 
-        ax.tickFont = axisArg['tickFont']
+        # ax.tickFont = axisArg['tickFont']
+
+        ax.setStyle(tickFont = axisArg['tickFont'])
         ax.setPen(axisArg['axisPen'])
         ax.setStyle(tickLength = axisArg['tickLength'])
 
@@ -403,7 +405,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
     def updateXAxis(self,ax,*args,**kargs):
         vb = ax.linkedView()
-        dataItems = [x for x in vb.addedItems if type(x)==type(pg.PlotDataItem()) or type(x)==type(pg.ImageItem())]
+        dataItems = [x for x in vb.addedItems if
+                type(x)==type(pg.PlotDataItem()) or
+                type(x)==type(pg.ImageItem())]
         axisArg = axisArgs
         xUnits = np.unique([item.xUnit for item in dataItems])
         names = [item.xName for item in dataItems]
@@ -434,7 +438,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         # axisArg['axisPen'].setColor(pgColor)
 
         ax.setLabel(xLabel,units = xUnit,**axisArg['labelStyleArgs'])
-        ax.tickFont = axisArg['tickFont']
+        # ax.tickFont = axisArg['tickFont']
+        ax.setStyle(tickFont = axisArg['tickFont'])
+
         ax.setPen(axisArg['axisPen'])
         ax.setStyle(tickLength = axisArg['tickLength'])
         ax.setHeight(h=axisArg['xAxisHeight'])
@@ -444,9 +450,12 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
     def updateAxes (self, windex, pindex,*args,**kargs):
         plot = self.ps[windex][pindex]
-        axes = [x for x in plot.allChildItems() if type(x) ==type(pg.AxisItem('left'))]
-        yAxes = [x for x in axes if x.orientation=='left' or x.orientation=='right']
+        axes = [x for x in plot.allChildItems() if type(x) ==
+                type(pg.AxisItem('left'))]
+        yAxes = [x for x in axes if x.orientation == 'left' or
+                x.orientation == 'right']
         xAxes = [x for x in axes if x.orientation == 'bottom']
+        # from IPython import embed; embed()
 
 
         for yAxis in yAxes:

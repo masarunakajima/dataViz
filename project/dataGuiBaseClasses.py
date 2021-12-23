@@ -24,6 +24,7 @@ import os,sys
 import matplotlib.pyplot as plt
 import math as m
 #%matplotlib inline 
+import scipy
 from scipy.interpolate import UnivariateSpline
 from matplotlib import colors
 import six
