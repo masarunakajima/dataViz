@@ -450,11 +450,19 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
     def updateAxes (self, windex, pindex,*args,**kargs):
         plot = self.ps[windex][pindex]
-        axes = [x for x in plot.allChildItems() if type(x) ==
-                type(pg.AxisItem('left'))]
-        yAxes = [x for x in axes if x.orientation == 'left' or
-                x.orientation == 'right']
-        xAxes = [x for x in axes if x.orientation == 'bottom']
+        yAxes = []
+        xAxes = []
+        for key, value in plot.axes.items():
+            if key == 'bottom':
+                xAxes.append(value['item'])
+            elif key == 'left' or key == 'right':
+                yAxes.append(value['item'])
+
+        # axes = [x for x in plot.allChildItems() if type(x) ==
+                # type(pg.AxisItem('left'))]
+        # yAxes = [x for x in axes if x.orientation == 'left' or
+                # x.orientation == 'right']
+        # xAxes = [x for x in axes if x.orientation == 'bottom']
         # from IPython import embed; embed()
 
 
