@@ -345,8 +345,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
 
 
-    def addNewImageItem (self, windex,pindex,plotType,dataParam,processParam):
-        dindex = len(self.ds[windex][pindex], axisScale = 1)
+    def addNewImageItem (self,
+            windex,pindex,plotType,dataParam,processParam, axisScale = 1):
+        dindex = len(self.ds[windex][pindex])
 
 
         item = pg.ImageItem()
@@ -357,6 +358,13 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         item.dindex = dindex
         item.processParam = processParam
 
+        #change axis dimension when plotsize changes
+        plot = self.ps[windex][pindex]
+        if plot.receivers(plot.geometryChanged) == 1:
+            plot.geometryChanged.connect(lambda: self.updateAxes(windex,
+                pindex, axisScale = axisScale))
+            plot.geometryChanged.connect(lambda: self.updateLegend(windex,
+                pindex))
 
         item.rawData = self.getData(dataParam)
         item.errData = self.getErr(dataParam)
@@ -793,7 +801,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         dataParamList = [dataParam[dataParam.index==i] for i in range(len(dataParam))]
         # from IPython import embed; embed()
         pType = pTypeSpectrogramKey
-        dindex = self.addNewImageItem(windex,pindexes[0][0],pType, dataParamList[0],processParam.copy())
+        dindex = self.addNewImageItem(windex,pindexes[0][0],pType,
+                dataParamList[0],processParam.copy(), axisScale = 1)
 
         dataItem = self.ds[windex][pindexes[0][0]][dindex]
         plot = self.ps[windex][pindexes[0][0]]
