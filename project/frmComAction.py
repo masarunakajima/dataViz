@@ -214,6 +214,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         if plot.receivers(plot.geometryChanged) == 1:
             plot.geometryChanged.connect(lambda: self.updateAxes(windex,
                 pindex, axisScale = axisScale))
+            plot.geometryChanged.connect(lambda: self.updateLegend(windex,
+                pindex))
 
 
         item.errorBarPen = pg.mkPen(item.color,width=errorBarPenWidth)
@@ -292,6 +294,11 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.legend.addItem(item, name=item.name())
 
         return dindex
+
+    def updateLegend(self, windex, pindex):
+        p = self.ps[windex][pindex]
+        dim = min(p.height(), p.width())
+        p.legend.setScale(dim*legendAdjustScale)
 
     def addNewDataItemCsv(self, windex,pindex,plotType,dataParam,processParam):
 
@@ -397,12 +404,12 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         # axisArg['labelStyleArgs']['color']=color
         # axisArg['axisPen'].setColor(pgColor)
         dim = min(vb.height(), vb.width())*axisScale
-        tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
+        tfont = QtGui.QFont('AnyStyle', int(dim*tickFontScale))
         lblArgs = axisArg['labelStyleArgs']
-        lblArgs['font-size'] = str(int(dim*0.04))+'pt'
-        width = int(dim*0.25) 
-        ticklen = int(dim*0.02)
-        tickoffset = int(dim*0.02)
+        lblArgs['font-size'] = str(int(dim*labelFontScale))+'pt'
+        width = int(dim*widthScale) 
+        ticklen = int(dim*tickLenScale)
+        tickoffset = int(dim*tickoffsetScale)
 
         ax.setLabel(yLabel,units = yUnit,**lblArgs)
 
@@ -450,12 +457,12 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         # print(axisArg['axisPen'])
         # axisArg['axisPen'].setColor(pgColor)
         dim = min(vb.height(), vb.width())*axisScale
-        tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
+        tfont = QtGui.QFont('AnyStyle', int(dim*tickFontScale))
         lblArgs = axisArg['labelStyleArgs']
-        lblArgs['font-size'] = str(int(dim*0.04))+'pt'
-        height = int(dim*0.17) 
-        ticklen = int(dim*0.02)
-        tickoffset = int(dim*0.02)
+        lblArgs['font-size'] = str(int(dim*labelFontScale))+'pt'
+        height = int(dim*heightScale) 
+        ticklen = int(dim*tickLenScale)
+        tickoffset = int(dim*tickoffsetScale)
 
 
         ax.setLabel(xLabel,units = xUnit, **lblArgs)
@@ -615,7 +622,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         for i in range(2):
             for dataParam in dataParamList:
-                dindex = self.addNewDataItem(windex,pindexes[i][0],pTypeList[i], dataParam,processParam.copy())
+                dindex = self.addNewDataItem(windex, pindexes[i][0],
+                        pTypeList[i], dataParam,processParam.copy(),
+                        axisScale = 2)
             #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
             #self.updateYAxis(self.ps[windex][pindexes[i][0]].getAxis('left'))
             self.updateAxes(windex,pindexes[i][0])

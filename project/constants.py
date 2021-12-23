@@ -234,3 +234,18 @@ keys = {'addressSeparator':addressSeparator,'daqSplitter':daqSplitter,\
 'DateKey':DateKey,'Y_Unit_LabelKey':Y_Unit_LabelKey,'X_DimensionKey':X_DimensionKey,\
 'X0Key':X0Key,'Delta_XKey':Delta_XKey,'plotPenList':plotPenList,\
 'plotYLabelTypes':plotYLabelTypes,'plotXLabelTypes':plotXLabelTypes}
+
+
+#scale parameters
+max_dim = 400
+tickFontScale = 0.03
+labelFontScale = 0.04
+widthScale = 0.25
+heightScale = 0.17
+tickLenScale = 0.02
+tickoffsetScale = 0.02
+legendAdjustScale = 0.003
+
+
+
+
