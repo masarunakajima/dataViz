@@ -209,6 +209,10 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         item.pen = pen
         item.color = penColors[dindex%len(penColors)]
 
+        #change axis dimension when plotsize changes
+        plot.geometryChanged.connect(lambda: self.updateAxes(windex,
+            pindex))
+
 
         item.errorBarPen = pg.mkPen(item.color,width=errorBarPenWidth)
 
@@ -390,24 +394,31 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         # axisArg['labelStyleArgs']['color']=color
         # axisArg['axisPen'].setColor(pgColor)
+        dim = min(vb.height(), vb.width())
+        tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
+        lblArgs = axisArg['labelStyleArgs']
+        lblArgs['font-size'] = str(int(dim*0.04))+'pt'
+        width = int(dim*0.25) 
+        ticklen = int(dim*0.02)
+        tickoffset = int(dim*0.02)
 
-        ax.setLabel(yLabel,units = yUnit,**axisArg['labelStyleArgs'])
+        ax.setLabel(yLabel,units = yUnit,**lblArgs)
 
         # ax.tickFont = axisArg['tickFont']
 
-        ax.setStyle(tickFont = axisArg['tickFont'])
+        ax.setStyle(tickFont = tfont)
         ax.setPen(axisArg['axisPen'])
-        ax.setStyle(tickLength = axisArg['tickLength'])
+        ax.setStyle(tickLength = ticklen)
 
-        ax.setWidth(w=axisArg['yAxisWidth'])
-        ax.setStyle(tickTextOffset = axisArg['yTickTextOffset'])
+        ax.setWidth(w = width)
+        ax.setStyle(tickTextOffset = tickoffset)
         return ax
 
     def updateXAxis(self,ax,*args,**kargs):
         vb = ax.linkedView()
-        dataItems = [x for x in vb.addedItems if
-                type(x)==type(pg.PlotDataItem()) or
-                type(x)==type(pg.ImageItem())]
+        dataItems = [x for x in vb.addedItems if 
+                type(x) == type(pg.PlotDataItem()) or 
+                type(x) == type(pg.ImageItem())]
         axisArg = axisArgs
         xUnits = np.unique([item.xUnit for item in dataItems])
         names = [item.xName for item in dataItems]
@@ -436,15 +447,22 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         axisArg['labelStyleArgs']['color']=color
         # print(axisArg['axisPen'])
         # axisArg['axisPen'].setColor(pgColor)
+        dim = min(vb.height(), vb.width())
+        tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
+        lblArgs = axisArg['labelStyleArgs']
+        lblArgs['font-size'] = str(int(dim*0.04))+'pt'
+        height = int(dim*0.17) 
+        ticklen = int(dim*0.02)
+        tickoffset = int(dim*0.02)
 
-        ax.setLabel(xLabel,units = xUnit,**axisArg['labelStyleArgs'])
-        # ax.tickFont = axisArg['tickFont']
-        ax.setStyle(tickFont = axisArg['tickFont'])
+
+        ax.setLabel(xLabel,units = xUnit, **lblArgs)
+        ax.setStyle(tickFont = tfont)
 
         ax.setPen(axisArg['axisPen'])
-        ax.setStyle(tickLength = axisArg['tickLength'])
-        ax.setHeight(h=axisArg['xAxisHeight'])
-        ax.setStyle(tickTextOffset = axisArg['xTickTextOffset'])
+        ax.setStyle(tickLength = ticklen)
+        ax.setHeight(h=height)
+        ax.setStyle(tickTextOffset = tickoffset)
         return ax
 
 

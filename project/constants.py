@@ -129,7 +129,7 @@ nStrLegend = 20 # number of letters to appear on legend
 legendScale = 1.8 #
 
 #axis preference
-labelStyleArgs = {'color': foreGround,'font-size': '24pt'}
+labelStyleArgs = {'color': foreGround}
 tickFont = QtGui.QFont('AnyStyle',24)
 tickLength = 20      
 yAxisWidth = 150
