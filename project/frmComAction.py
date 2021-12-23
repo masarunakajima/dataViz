@@ -193,7 +193,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         self.ds[windex].append([])
         return pindex
 
-    def addNewDataItem(self, windex,pindex,plotType,dataParam,processParam):
+    def addNewDataItem(self, windex, pindex, plotType, dataParam,
+            processParam, axisScale = 1):
 
         dindex = len(self.ds[windex][pindex])
         plot = self.ps[windex][pindex]
@@ -210,8 +211,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         item.color = penColors[dindex%len(penColors)]
 
         #change axis dimension when plotsize changes
-        plot.geometryChanged.connect(lambda: self.updateAxes(windex,
-            pindex))
+        if plot.receivers(plot.geometryChanged) == 1:
+            plot.geometryChanged.connect(lambda: self.updateAxes(windex,
+                pindex, axisScale = axisScale))
 
 
         item.errorBarPen = pg.mkPen(item.color,width=errorBarPenWidth)
@@ -337,7 +339,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
 
     def addNewImageItem (self, windex,pindex,plotType,dataParam,processParam):
-        dindex = len(self.ds[windex][pindex])
+        dindex = len(self.ds[windex][pindex], axisScale = 1)
 
 
         item = pg.ImageItem()
@@ -362,7 +364,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         self.ds[windex][pindex].append(item)
         return dindex
 
-    def updateYAxis(self, ax, *args, **kargs):
+    def updateYAxis(self, ax, axisScale = 1, *args, **kargs):
         vb = ax.linkedView()
         # print (vb.addedItems)
         dataItems = [x for x in vb.addedItems if type(x)==type(pg.PlotDataItem())or type(x)==type(pg.ImageItem())]
@@ -394,7 +396,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         # axisArg['labelStyleArgs']['color']=color
         # axisArg['axisPen'].setColor(pgColor)
-        dim = min(vb.height(), vb.width())
+        dim = min(vb.height(), vb.width())*axisScale
         tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
         lblArgs = axisArg['labelStyleArgs']
         lblArgs['font-size'] = str(int(dim*0.04))+'pt'
@@ -414,7 +416,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         ax.setStyle(tickTextOffset = tickoffset)
         return ax
 
-    def updateXAxis(self,ax,*args,**kargs):
+    def updateXAxis(self,ax, axisScale = 1, *args,**kargs):
         vb = ax.linkedView()
         dataItems = [x for x in vb.addedItems if 
                 type(x) == type(pg.PlotDataItem()) or 
@@ -447,7 +449,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         axisArg['labelStyleArgs']['color']=color
         # print(axisArg['axisPen'])
         # axisArg['axisPen'].setColor(pgColor)
-        dim = min(vb.height(), vb.width())
+        dim = min(vb.height(), vb.width())*axisScale
         tfont = QtGui.QFont('AnyStyle', int(dim*0.03))
         lblArgs = axisArg['labelStyleArgs']
         lblArgs['font-size'] = str(int(dim*0.04))+'pt'
@@ -466,7 +468,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         return ax
 
 
-    def updateAxes (self, windex, pindex,*args,**kargs):
+    def updateAxes (self, windex, pindex, axisScale = 1, *args,**kargs):
         plot = self.ps[windex][pindex]
         yAxes = []
         xAxes = []
@@ -485,9 +487,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
 
         for yAxis in yAxes:
-            self.updateYAxis(yAxis, *args,**kargs)
+            self.updateYAxis(yAxis, axisScale = axisScale,  *args,**kargs)
         for xAxis in xAxes:
-            self.updateXAxis(xAxis, *args,**kargs)
+            self.updateXAxis(xAxis, axisScale = axisScale, *args,**kargs)
 
     def updateViews(self,p):
         vbs = [x for x in p.scene().items() if type(x) ==type(pg.ViewBox())][1:]
@@ -687,6 +689,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
     def plotCsd(self):
         self.times = []
+        axisScale = 2
 
         nPlotRow,nPlotColumn = 4,1
         windex,pindexes,dataParam,processParam = self.getInitialInfo(nPlotRow=nPlotRow,nPlotColumn=nPlotColumn)
@@ -697,7 +700,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         pTypeList = [pTypeCsdKey,pTypeCohKey,pTypePhaseKey,pTypeBasicKey]
         paramList  = [dataParam[dataParam.index==i] for i in range(len(dataParam))]
 
-        self.addNewDataItem(windex,pindexes[0][0],pTypeList[0], dataParam,processParam.copy())
+        self.addNewDataItem(windex,pindexes[0][0],pTypeList[0],
+                dataParam,processParam.copy(), axisScale = axisScale)
         yAx,xAx = self.ps[windex][pindexes[0][0]].getAxis('left'),self.ps[windex][pindexes[0][0]].getAxis('bottom')
         #self.updateYAxis(yAx)
         #self.updateXAxis(xAx)
@@ -708,7 +712,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.showLabel(False)
         xAx.setMaximumHeight(0)
 
-        self.addNewDataItem(windex,pindexes[1][0],pTypeList[1], dataParam,processParam.copy())
+        self.addNewDataItem(windex,pindexes[1][0],pTypeList[1],
+                dataParam,processParam.copy(), axisScale = axisScale)
         yAx,xAx = self.ps[windex][pindexes[1][0]].getAxis('left'),self.ps[windex][pindexes[1][0]].getAxis('bottom')
         self.ps[windex][pindexes[1][0]].legend.hide()
         #self.updateYAxis(yAx)
@@ -718,7 +723,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.showLabel(False)
         xAx.setMaximumHeight(0)
 
-        self.addNewDataItem(windex,pindexes[2][0],pTypeList[2], dataParam,processParam.copy())
+        self.addNewDataItem(windex,pindexes[2][0],pTypeList[2],
+                dataParam,processParam.copy(), axisScale = axisScale)
         #self.updateYAxis(self.ps[windex][pindexes[2][0]].getAxis('left'))
         #self.updateXAxis(self.ps[windex][pindexes[2][0]].getAxis('bottom'))
         self.updateAxes(windex,pindexes[2][0])
@@ -732,7 +738,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         #self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(self.linkMaxHeight,windex,[self.ps[windex][pindexes[0][0]],self.ps[windex][pindexes[1][0]],self.ps[windex][pindexes[2][0]],self.ps[windex][pindexes[3][0]]]))
 
         for i in range(2):
-            dindex = self.addNewDataItem(windex,pindexes[3][0],pTypeList[3], paramList[i],processParam.copy())
+            dindex = self.addNewDataItem(windex,pindexes[3][0],
+                    pTypeList[3], paramList[i],processParam.copy(),
+                    axisScale = axisScale)
             #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
         #self.updateYAxis(self.ps[windex][pindexes[3][0]].getAxis('left'))
         #self.updateXAxis(self.ps[windex][pindexes[3][0]].getAxis('bottom'))
