@@ -134,7 +134,7 @@ tickFont = QtGui.QFont('AnyStyle',24)
 tickLength = 20      
 yAxisWidth = 150
 yTickTextOffset = 20
-xAxisHeight = 100
+xAxisHeight = 150
 xTickTextOffset = 20
  
 axisPen = pg.mkPen(foreGround, width=3)
