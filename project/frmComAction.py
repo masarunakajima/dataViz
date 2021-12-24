@@ -194,7 +194,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         return pindex
 
     def addNewDataItem(self, windex, pindex, plotType, dataParam,
-            processParam, axisScale = 1):
+            processParam, axisScale = 1, legendFactor = 1):
 
         dindex = len(self.ds[windex][pindex])
         plot = self.ps[windex][pindex]
@@ -215,7 +215,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             plot.geometryChanged.connect(lambda: self.updateAxes(windex,
                 pindex, axisScale = axisScale))
             plot.geometryChanged.connect(lambda: self.updateLegend(windex,
-                pindex))
+                pindex, legendFactor = legendFactor))
 
 
         item.errorBarPen = pg.mkPen(item.color,width=errorBarPenWidth)
@@ -295,10 +295,10 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         return dindex
 
-    def updateLegend(self, windex, pindex):
+    def updateLegend(self, windex, pindex, legendFactor=1):
         p = self.ps[windex][pindex]
         dim = min(p.height(), p.width())
-        p.legend.setScale(dim*legendAdjustScale)
+        p.legend.setScale(dim*legendAdjustScale*legendFactor)
 
     def addNewDataItemCsv(self, windex,pindex,plotType,dataParam,processParam):
 
@@ -346,7 +346,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
 
     def addNewImageItem (self,
-            windex,pindex,plotType,dataParam,processParam, axisScale = 1):
+            windex,pindex,plotType,dataParam,processParam, axisScale
+            = 1, legendFactor = 1):
         dindex = len(self.ds[windex][pindex])
 
 
@@ -364,7 +365,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             plot.geometryChanged.connect(lambda: self.updateAxes(windex,
                 pindex, axisScale = axisScale))
             plot.geometryChanged.connect(lambda: self.updateLegend(windex,
-                pindex))
+                pindex, legendFactor = legendFactor))
 
         item.rawData = self.getData(dataParam)
         item.errData = self.getErr(dataParam)
@@ -382,7 +383,11 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
     def updateYAxis(self, ax, axisScale = 1, *args, **kargs):
         vb = ax.linkedView()
         # print (vb.addedItems)
-        dataItems = [x for x in vb.addedItems if type(x)==type(pg.PlotDataItem())or type(x)==type(pg.ImageItem())]
+        dataItems_temp = [x for x in vb.addedItems if 
+                type(x) == type(pg.PlotDataItem()) or 
+                type(x)==type(pg.ImageItem()) or 
+                type(x) == type(pg.PlotCurveItem())]
+        dataItems = [x for x in dataItems_temp if "yName" in dir(x)]
         axisArg = axisArgs
         yUnits = np.unique([item.yUnit for item in dataItems])
         names = [item.yName for item in dataItems]
@@ -532,7 +537,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         pTypeList = pTypeBasicKey
         for dataParam in dataParamList:
             #dindex = self.addNewDataItem(windex,pindexes[0][0],pTypeList, dataParam,processParam)
-            dindex = self.addNewDataItem(windex,pindexes[0][0],pTypeList, dataParam,processParam.copy())
+            dindex = self.addNewDataItem(windex, pindexes[0][0],
+                    pTypeList, dataParam,processParam.copy())
         self.updateAxes(windex,pindexes[0][0])
 
         ## self.updateXAxis(self.ps[windex][pindexes[0][0]].getAxis('bottom'))
@@ -632,7 +638,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             for dataParam in dataParamList:
                 dindex = self.addNewDataItem(windex, pindexes[i][0],
                         pTypeList[i], dataParam,processParam.copy(),
-                        axisScale = 2)
+                        axisScale = 2, legendFactor = 2)
             #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
             #self.updateYAxis(self.ps[windex][pindexes[i][0]].getAxis('left'))
             self.updateAxes(windex,pindexes[i][0])
@@ -642,7 +648,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             xRegion = pg.LinearRegionItem()
             xRegion.xRegionSlot = None
             xRegion.setZValue(10)
-            xRegion.sigRegionChanged.connect(lambda: self.updateXRegion(windex,pindexes[0][0],xRegion,**keys))
+            xRegion.sigRegionChanged.connect(lambda: self.updateXRegion(windex,pindexes[0][0], xRegion, **keys))
             self.ps[windex][pindexes[1][0]].addItem(xRegion,ignoreBounds=True)
             xRegion.setRegion([0.008,0.010])
         self.ps[windex][pindexes[0][0]].setAutoVisible(y=True)
@@ -718,7 +724,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         paramList  = [dataParam[dataParam.index==i] for i in range(len(dataParam))]
 
         self.addNewDataItem(windex,pindexes[0][0],pTypeList[0],
-                dataParam,processParam.copy(), axisScale = axisScale)
+                dataParam,processParam.copy(), axisScale = axisScale,
+                legendFactor = 2)
         yAx,xAx = self.ps[windex][pindexes[0][0]].getAxis('left'),self.ps[windex][pindexes[0][0]].getAxis('bottom')
         #self.updateYAxis(yAx)
         #self.updateXAxis(xAx)
@@ -730,7 +737,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.setMaximumHeight(0)
 
         self.addNewDataItem(windex,pindexes[1][0],pTypeList[1],
-                dataParam,processParam.copy(), axisScale = axisScale)
+                dataParam,processParam.copy(), axisScale = axisScale,
+                legendFactor = 2)
         yAx,xAx = self.ps[windex][pindexes[1][0]].getAxis('left'),self.ps[windex][pindexes[1][0]].getAxis('bottom')
         self.ps[windex][pindexes[1][0]].legend.hide()
         #self.updateYAxis(yAx)
@@ -741,7 +749,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.setMaximumHeight(0)
 
         self.addNewDataItem(windex,pindexes[2][0],pTypeList[2],
-                dataParam,processParam.copy(), axisScale = axisScale)
+                dataParam,processParam.copy(), axisScale = axisScale,
+                legendFactor = 2)
         #self.updateYAxis(self.ps[windex][pindexes[2][0]].getAxis('left'))
         #self.updateXAxis(self.ps[windex][pindexes[2][0]].getAxis('bottom'))
         self.updateAxes(windex,pindexes[2][0])
@@ -757,7 +766,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         for i in range(2):
             dindex = self.addNewDataItem(windex,pindexes[3][0],
                     pTypeList[3], paramList[i],processParam.copy(),
-                    axisScale = axisScale)
+                    axisScale = axisScale, legendFactor = 2)
             #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
         #self.updateYAxis(self.ps[windex][pindexes[3][0]].getAxis('left'))
         #self.updateXAxis(self.ps[windex][pindexes[3][0]].getAxis('bottom'))
@@ -802,7 +811,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         # from IPython import embed; embed()
         pType = pTypeSpectrogramKey
         dindex = self.addNewImageItem(windex,pindexes[0][0],pType,
-                dataParamList[0],processParam.copy(), axisScale = 1)
+                dataParamList[0],processParam.copy(), axisScale = 1,
+                legendFactor = 1)
 
         dataItem = self.ds[windex][pindexes[0][0]][dindex]
         plot = self.ps[windex][pindexes[0][0]]
@@ -811,10 +821,18 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.legend.setAutoFillBackground(True)
 
         hist.setImageItem(dataItem)
+        # hist.plot.geometryChanged.connect(lambda: self.updateAxes(windex,
+            # pindexes[0][1]))
+
         hist.setLevels(dataItem.dataMin,dataItem.dataMax)
         hist.plot.yName = dataItem.zName
         hist.plot.yUnit = dataItem.zUnit
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut, hist,windex,pindexes[0][0],dindex))
+
+        self.updateYAxis(hist.axis, axisScale = 10)
+        hist.geometryChanged.connect(lambda: self.updateYAxis(hist.axis,
+            axisScale = 10))
+
 
         self.updateXAxis(plot.getAxis('bottom'))
         self.updateYAxis(plot.getAxis('left'))
@@ -844,19 +862,24 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         pTypeList  = [pTypeCsdSpectrogramKey, pTypeCohSpectrogramKey, pTypePhaseSpectrogramKey]
 
         #CSD
-        dindex = self.addNewImageItem(windex,pindexes[0][0],pTypeList[0], dataParam,processParam.copy())
+        dindex = self.addNewImageItem(windex, pindexes[0][0], pTypeList[0], 
+                dataParam, processParam.copy(), axisScale = 2,
+                legendFactor = 1.5)
         dataItem = self.ds[windex][pindexes[0][0]][dindex]
         plot = self.ps[windex][pindexes[0][0]]
-        hist = self.ps[windex][pindexes[0][1]]
+        hist1 = self.ps[windex][pindexes[0][1]]
         plot.legend.addItem(dataItem,dataItem.name)
         plot.legend.setAutoFillBackground(True)
 
-        hist.setImageItem(dataItem)
-        hist.setLevels(dataItem.dataMin,dataItem.dataMax)
-        hist.plot.yName = dataItem.zName
-        hist.plot.yUnit = dataItem.zUnit
-        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut, hist,windex,pindexes[0][0],dindex))
-        self.updateYAxis(hist.axis)
+        hist1.setImageItem(dataItem)
+        hist1.setLevels(dataItem.dataMin,dataItem.dataMax)
+        hist1.plot.yName = dataItem.zName
+        hist1.plot.yUnit = dataItem.zUnit
+        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
+            hist1,windex,pindexes[0][0],dindex))
+        self.updateYAxis(hist1.axis)
+        hist1.geometryChanged.connect(lambda: self.updateYAxis(hist1.axis,
+            axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -866,19 +889,24 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.setMaximumHeight(0)
 
         #Coherence
-        dindex = self.addNewImageItem(windex,pindexes[1][0],pTypeList[1], dataParam,processParam.copy())
+        dindex = self.addNewImageItem(windex,pindexes[1][0],
+                pTypeList[1], dataParam,processParam.copy(), axisScale
+                = 2, legendFactor = 1.5)
         dataItem = self.ds[windex][pindexes[1][0]][dindex]
         plot = self.ps[windex][pindexes[1][0]]
-        hist = self.ps[windex][pindexes[1][1]]
+        hist2 = self.ps[windex][pindexes[1][1]]
         plot.legend.addItem(dataItem,dataItem.name)
         plot.legend.setAutoFillBackground(True)
 
-        hist.setImageItem(dataItem)
-        hist.setLevels(dataItem.dataMin,dataItem.dataMax)
-        hist.plot.yName = dataItem.zName
-        hist.plot.yUnit = dataItem.zUnit
-        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut, hist,windex,pindexes[1][0],dindex))
-        self.updateYAxis(hist.axis)
+        hist2.setImageItem(dataItem)
+        hist2.setLevels(dataItem.dataMin,dataItem.dataMax)
+        hist2.plot.yName = dataItem.zName
+        hist2.plot.yUnit = dataItem.zUnit
+        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
+            hist2,windex,pindexes[1][0],dindex))
+        self.updateYAxis(hist2.axis)
+        hist2.geometryChanged.connect(lambda: self.updateYAxis(hist2.axis,
+            axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -888,19 +916,24 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         xAx.setMaximumHeight(0)
 
         #Phase
-        dindex = self.addNewImageItem(windex,pindexes[2][0],pTypeList[2], dataParam,processParam.copy())
+        dindex = self.addNewImageItem(windex,pindexes[2][0], pTypeList[2], 
+                dataParam,processParam.copy(), axisScale = 2,
+                legendFactor = 1.5)
         dataItem = self.ds[windex][pindexes[2][0]][dindex]
         plot = self.ps[windex][pindexes[2][0]]
-        hist = self.ps[windex][pindexes[2][1]]
+        hist3 = self.ps[windex][pindexes[2][1]]
         plot.legend.addItem(dataItem,dataItem.name)
         plot.legend.setAutoFillBackground(True)
 
-        hist.setImageItem(dataItem)
-        hist.setLevels(dataItem.dataMin,dataItem.dataMax)
-        hist.plot.yName = dataItem.zName
-        hist.plot.yUnit = dataItem.zUnit
-        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut, hist,windex,pindexes[2][0],dindex))
-        self.updateYAxis(hist.axis)
+        hist3.setImageItem(dataItem)
+        hist3.setLevels(dataItem.dataMin,dataItem.dataMax)
+        hist3.plot.yName = dataItem.zName
+        hist3.plot.yUnit = dataItem.zUnit
+        plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
+            hist3,windex,pindexes[2][0],dindex))
+        self.updateYAxis(hist3.axis)
+        hist3.geometryChanged.connect(lambda: self.updateYAxis(hist3.axis,
+            axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -912,7 +945,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         self.ps[windex][pindexes[0][0]].setYLink(self.ps[windex][pindexes[2][0]])
         self.ps[windex][pindexes[1][0]].setYLink(self.ps[windex][pindexes[2][0]])
 
-        self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(linkMaxHeight,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
+        # self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(linkMaxHeight,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
+        self.ws[windex].sigDeviceRangeChanged.connect(lambda:
+                self.linkMaxHeight(windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
 
 
 
