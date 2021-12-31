@@ -310,31 +310,6 @@ class frmLoadData(QtWidgets.QFrame, dataGuiBaseClass):
 
 
 
-        """
-
-        if shotNum not in self.ListboxItemLoadedShot.nameList:
-            self.params = self.params.append(param)
-            data = {self.shotNumKey:shotNum, self.dfKey:pd.concat(shotDaq.digitizerDataList, axis=1)}
-            self.dataList.append(data)
-            self.ListboxItemLoadedShot.nameList.append(shotNum)
-            self.ListboxItemLoadedShot.itemList.append(shotNum)
-        else:
-            mask = self.params[self.shotNumKey].astype(str)!=shotNum
-            self.params = self.params[mask]
-            self.params = self.params.append(param)
-            index = [x for x in range(len(self.dataList)) if self.dataList[x][self.shotNumKey]==shotNum][0]
-            data = {self.shotNumKey:shotNum, self.dfKey:pd.concat(shotDaq.digitizerDataList, axis=1)}
-            self.dataList[index]=data
-
-
-
-        self.ListboxItemLoadedShot.nameList.sort()
-        self.ListboxItemLoadedShot.itemList.sort()
-        self.ListboxItemLoadedShot.listInBox()
-        """
-
-
-
 
 
 

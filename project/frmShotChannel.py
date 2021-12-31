@@ -28,14 +28,6 @@ fpath = path.join(dirname, fname)
 
 
 path =os.getcwd()
-# while len(path)>5:
-    # path = os.path.dirname(path)
-    # dirs = next(os.walk(path))[1]
-    # if path not in sys.path:
-        # sys.path.append(path)
-    # for Dir in dirs:
-        # if Dir not in sys.path:
-            # sys.path.append(os.path.join(path,Dir))
 
 from dataGuiBaseClasses import *
 from constants import * 
@@ -142,7 +134,7 @@ class frmShotChannel(QtWidgets.QFrame,dataGuiBaseClass):
           if count == 0: #if the channel cannot be found in any shots selected
               item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable & ~QtCore.Qt.ItemIsEnabled)
           elif count < len(shotNums):#only some but not all the shots selected have the channel
-              item.setBackground(self.listIncompleteMatchBgColor)
+              item.setBackground(listIncompleteMatchBgColor)
 
       self.updateSelection()
 

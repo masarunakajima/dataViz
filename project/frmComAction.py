@@ -52,11 +52,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             self.frmAvailableChannel.lstChannel.doubleClicked.connect(self.plotBasic)
 
         self.frmWindowLayout = frmWindowLayout()
-        # self.frmWindowLayout.show()
-        # self.frmWindowLayout.setupUi(self.frmWindowLayout)
 
         self.frmAction = frmAction1()
-        # self.Ui_frmAction.setupUi(self.frmAction)
 
 
         self.gridLayout.addWidget(self.frmAvailableChannel, 0, 0, 1, 1)
@@ -209,13 +206,13 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         item.processParam = processParam
         item.pen = pen
         item.color = penColors[dindex%len(penColors)]
-
+        window = self.ws[windex] 
         #change axis dimension when plotsize changes
-        if plot.receivers(plot.geometryChanged) == 1:
-            plot.geometryChanged.connect(lambda: self.updateAxes(windex,
-                pindex, axisScale = axisScale))
-            plot.geometryChanged.connect(lambda: self.updateLegend(windex,
-                pindex, legendFactor = legendFactor))
+        # if window.receivers(window.sigDeviceRangeChanged) == 1:
+        window.sigDeviceRangeChanged.connect(lambda: self.updateAxes(windex,
+            pindex, axisScale = axisScale))
+        window.sigDeviceRangeChanged.connect(lambda: self.updateLegend(windex,
+            pindex, legendFactor = legendFactor))
 
 
         item.errorBarPen = pg.mkPen(item.color,width=errorBarPenWidth)
@@ -235,6 +232,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             panel[panelColorKey]=item.color
             panel[panelAxisKey] = plot.getAxis('left')
             panel[panelUnitKey] = item.yUnit
+            # from IPython import embed; embed()
             plot.panels.append(panel)
             panelIndex=0
 
@@ -361,11 +359,12 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         #change axis dimension when plotsize changes
         plot = self.ps[windex][pindex]
-        if plot.receivers(plot.geometryChanged) == 1:
-            plot.geometryChanged.connect(lambda: self.updateAxes(windex,
-                pindex, axisScale = axisScale))
-            plot.geometryChanged.connect(lambda: self.updateLegend(windex,
-                pindex, legendFactor = legendFactor))
+        window = self.ws[windex]
+        # if plot.receivers(plot.geometryChanged) == 1:
+        window.sigDeviceRangeChanged.connect(lambda: self.updateAxes(windex,
+            pindex, axisScale = axisScale))
+        window.sigDeviceRangeChanged.connect(lambda: self.updateLegend(windex,
+            pindex, legendFactor = legendFactor))
 
         item.rawData = self.getData(dataParam)
         item.errData = self.getErr(dataParam)
@@ -548,21 +547,6 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         self.frmWindowLayout.updatePlotLayouts()
         if self.selectPlot:
             self.frmWindowLayout.tblPlot1.item(self.tempSelectedRow,self.tempSelectedColumn).setSelected(True)
-       #test begins###########################################
-        # plot = self.ps[windex][pindexes[0][0]]
-        # axes = [x for x in plot.allChildItems() if type(x) ==type(pg.AxisItem('left'))]
-        # yAxes = [x for x in axes if x.orientation=='left' or x.orientation=='right']
-        # xAxes = [x for x in axes if x.orientation == 'bottom']
-        # ax = xAxes[0]
-        # font1=QtGui.QFont()
-        # font1.setPixelSize(20)
-        # xAxes[0].tickFont = font1
-
-        # for yAxis in yAxes:
-            # self.updateYAxis(yAxis)
-        # for xAxis in xAxes:
-            # self.updateXAxis(xAxis, *args,**kargs)
-       #test ends ###########################################
 
     def plotBasicCsv(self):
 
@@ -603,7 +587,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         print("too many windows selected")
         return None,None,None,None
       windex,location = self.getStartingLocation()
-      pindexes = self.getPindexes(windex=windex,location=location, nPlotRow=nPlotRow, nPlotColumn=nPlotColumn, lut = lut,plotMatrix =plotMatrix,spanMatrix=spanMatrix)
+      pindexes = self.getPindexes(windex=windex, location=location, 
+              nPlotRow=nPlotRow, nPlotColumn=nPlotColumn, lut = lut,
+              plotMatrix = plotMatrix, spanMatrix=spanMatrix)
       if pindexes == None:
         print("pindex none")
         return  None,None,None,None
@@ -759,21 +745,13 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
         self.ps[windex][pindexes[0][0]].setXLink(self.ps[windex][pindexes[2][0]])
         self.ps[windex][pindexes[1][0]].setXLink(self.ps[windex][pindexes[2][0]])
-        #self.ps[windex][pindexes[2][0]].vb.sigResized.connect(functools.partial(self.linkMaxHeight,self.ps[windex][pindexes[2][0]].vb,[self.ps[windex][pindexes[1][0]],self.ps[windex][pindexes[0][0]]]))
-        #self.ps[windex][pindexes[2][0]].vb.sigResized.connect(functools.partial(self.TESTPRINT,self.ps[windex][pindexes[2][0]]))
-        #self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(self.linkMaxHeight,windex,[self.ps[windex][pindexes[0][0]],self.ps[windex][pindexes[1][0]],self.ps[windex][pindexes[2][0]],self.ps[windex][pindexes[3][0]]]))
 
         for i in range(2):
             dindex = self.addNewDataItem(windex,pindexes[3][0],
                     pTypeList[3], paramList[i],processParam.copy(),
                     axisScale = axisScale, legendFactor = 2)
-            #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
-        #self.updateYAxis(self.ps[windex][pindexes[3][0]].getAxis('left'))
-        #self.updateXAxis(self.ps[windex][pindexes[3][0]].getAxis('bottom'))
         self.updateAxes(windex,pindexes[3][0])
 
-        #self.ps[windex][pindexes[0][0]].getAxis('bottom').label.hide()
-        #self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(self.linkMaxHeight,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0],pindexes[3][0]]))
         self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(self.linkMaxHeight,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0],pindexes[3][0]]))
         self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(self.linkMaxWidth,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0],pindexes[3][0]]))
         if not any(type(x)==type(pg.LinearRegionItem()) for x in self.ps[windex][pindexes[3][0]].allChildItems()):
@@ -830,7 +808,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut, hist,windex,pindexes[0][0],dindex))
 
         self.updateYAxis(hist.axis, axisScale = 10)
-        hist.geometryChanged.connect(lambda: self.updateYAxis(hist.axis,
+        self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist.axis,
             axisScale = 10))
 
 
@@ -878,7 +856,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist1,windex,pindexes[0][0],dindex))
         self.updateYAxis(hist1.axis)
-        hist1.geometryChanged.connect(lambda: self.updateYAxis(hist1.axis,
+        self.ws[windex].sigDevicerangeChanged.connect(lambda: self.updateYAxis(hist1.axis,
             axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
@@ -905,7 +883,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist2,windex,pindexes[1][0],dindex))
         self.updateYAxis(hist2.axis)
-        hist2.geometryChanged.connect(lambda: self.updateYAxis(hist2.axis,
+        self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist2.axis,
             axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
@@ -932,7 +910,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist3,windex,pindexes[2][0],dindex))
         self.updateYAxis(hist3.axis)
-        hist3.geometryChanged.connect(lambda: self.updateYAxis(hist3.axis,
+        self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist3.axis,
             axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
@@ -1215,7 +1193,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         row,column = lastLoc[0]+lastLoc[2],lastLoc[1]
         return row,column
 
-    def getPindexes(self, windex=None,location=(0,0,1,1), nPlotRow=1, nPlotColumn=1,lut = False,plotMatrix =None,spanMatrix=None):
+    def getPindexes(self, windex=None,location=(0,0,1,1), nPlotRow=1, 
+            nPlotColumn=1,lut = False,plotMatrix =None,spanMatrix=None):
         if windex ==None:
             return None
         rowSpan,columnSpan = location[2],location[3]
@@ -1227,7 +1206,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         for i in range(nPlotRow):
             planRow = []
             for j in range(nPlotColumn):
-                planRow.append((location[0]+i*rowSpan,location[1]+j*columnSpan,rowSpan,columnSpan))
+                planRow.append((location[0]+i*rowSpan, location[1]+
+                    j*columnSpan, rowSpan, columnSpan))
+        # self.Ui_frmAction.setupUi(self.frmAction)
             planLocations.append(planRow)
 
         #check if location is on one of the plots
