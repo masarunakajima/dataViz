@@ -306,14 +306,20 @@ def getDigitizerData(filePath,**keys):
             if row[keys['sheetCalibrationKey']].astype(str)[0]!='nan' and \
             row[keys['sheetCalibrationKey']].astype(str)[0].replace('.', '').replace('E','').replace('-','').isdigit():
                 digitizerData.info.loc[j,keys['calibrationKey']]=float(row[keys['sheetCalibrationKey']][0])
+
             if type(row[keys['sheetUnitKey']][0])==str:
-                if row[keys['sheetUnitKey']][0].encode('ascii','ignore')!='nan':
-                    digitizerData.info.loc[j,keys['unitKey']]=row[keys['sheetUnitKey']][0].encode('ascii','ignore')
-            else :
-                if row[keys['sheetUnitKey']].astype(str)[0]!='nan':
+                if row[keys['sheetUnitKey']][0]!='nan':
                     digitizerData.info.loc[j,keys['unitKey']]=row[keys['sheetUnitKey']][0]
+
+            # if type(row[keys['sheetUnitKey']][0])==str:
+                # if row[keys['sheetUnitKey']][0].encode('ascii','ignore')!='nan':
+                    # digitizerData.info.loc[j,keys['unitKey']]=str(row[keys['sheetUnitKey']][0].encode('ascii','ignore'))
+            # else :
+                # if row[keys['sheetUnitKey']].astype(str)[0]!='nan':
+                    # digitizerData.info.loc[j,keys['unitKey']]=row[keys['sheetUnitKey']][0]
     
     
+    # from IPython import embed; embed()
     return digitizerData
     
     
