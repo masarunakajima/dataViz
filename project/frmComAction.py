@@ -624,7 +624,7 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
             for dataParam in dataParamList:
                 dindex = self.addNewDataItem(windex, pindexes[i][0],
                         pTypeList[i], dataParam,processParam.copy(),
-                        axisScale = 2, legendFactor = 2)
+                        axisScale = 1, legendFactor = 1)
             #self.updateXAxis(self.ps[windex][pindexes[i][0]].getAxis('bottom'))
             #self.updateYAxis(self.ps[windex][pindexes[i][0]].getAxis('left'))
             self.updateAxes(windex,pindexes[i][0])

@@ -1235,7 +1235,8 @@ def bicoh(y,nperseg=None, fs=1.0, nfft=None, overlap=None, wind=None, minNSam=10
     bic = np.zeros([nfft, nfft])
     Pyy  = np.zeros([nfft,1])
     
-    mask = hankel(np.arange(nfft),np.array([nfft-1]+range(nfft-1)))
+    # from IPython import embed; embed()
+    mask = hankel(np.arange(nfft),np.array([nfft-1]+list(range(nfft-1))))
     Yf12 = np.zeros([nfft,nfft])
     ind  = np.arange(nperseg)
     y = y.ravel(order='F')  #make 1 dimensional array
@@ -1250,7 +1251,7 @@ def bicoh(y,nperseg=None, fs=1.0, nfft=None, overlap=None, wind=None, minNSam=10
     if nsamp<1 or nperseg<2**4:
         return waxis,bic
     
-    for k in xrange(nsamp):
+    for k in range(nsamp):
         ys = y[ind]    #get first segment 
         ys = (ys.reshape(1,-1) - np.mean(ys)) * wind
         
