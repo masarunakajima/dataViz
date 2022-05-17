@@ -7,6 +7,7 @@ from dlgXyView import dlgXyView
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QShortcut
 
+from scipy.signal import csd, coherence, welch
 
 
 from PyQt5.QtCore import QObject, pyqtSignal
