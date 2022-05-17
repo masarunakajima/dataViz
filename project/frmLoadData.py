@@ -8,16 +8,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-
 from constants import *
-
-
 from PyQt5.QtCore import QObject, pyqtSignal
-
-
+from glob import glob
 import os,sys
-
 from os import path
+
 dirname = path.dirname(__file__)
 fname = "frmLoadData.ui"
 fpath = path.join(dirname, fname)
@@ -33,8 +29,6 @@ while len(path)>5:
             sys.path.append(os.path.join(path,Dir))
 
 
-# from dataGuiBaseClasses import dataGuiBaseClass
-# from dataGuiBaseClasses import DigitizerData, ListboxItem, getDigitizerData
 from dataGuiBaseClasses import *
 
 
