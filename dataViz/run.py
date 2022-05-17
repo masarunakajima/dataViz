@@ -3,7 +3,7 @@ import sys
 import os
 from os import path 
 sys.path.append(path.join(path.dirname(__file__), "project"))
-from project.frmMain import * 
+from frmMain import * 
 
 
 
