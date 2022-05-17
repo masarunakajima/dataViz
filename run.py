@@ -20,6 +20,8 @@ def main():
     frame.show()
     app.exec_()
 
+    from IPython import embed; embed()
+
 
 
 if __name__ == "__main__":
