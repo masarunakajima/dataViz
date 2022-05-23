@@ -12,5 +12,33 @@ year, month, or data subdirectories. For example, you can either choose
 subdirectories will be updated. 
 4. Once you choose the date directory, the application will list the
    shots. Select one or more shots and click "Load".
-      
+
+## Simple plot
+1. Choose shot(s) in the "Loaded Shot" list and the channel(s) in the
+   "Channel" list, and click "Plot" button. A window will appear with
+the plot. 
+2. You can specify the parameters such as smoothing, DC cancel, and so
+   on. 
+3. All the channels chosen will be plotted together. 
+4. If you wish to plot different data in a different plot on the same
+   window, choose the window in the "Window" list and select a blank
+cell in the "Plot Layout", before clicking "Plot". 
+5. Different plots can be synchronize in the X-, Y-, or both axes by
+   selecting them in the "Plot Layout" and clicking "Link X", "Link Y",
+or "Link XY", respectively.
+
+## Power spectral density
+1. Choose a shot and a channel and click "PSD". A PSD and raw signal
+   will be plotted. 
+2. You can change the region to perform PSD by changing the region of
+   interest in the raw data plot.
+3. Parameters can also be changed, such as detrend, nperseg, and
+   overlap.
+
+## Cross spectral density
+1. Choose a shot and two channels and click "CSD". Cross spectral
+   density, coherence, phase, and raw data will be displayed. 
+2. You can change the region by adjusting the region of interest in the
+   raw data.
+  
    
