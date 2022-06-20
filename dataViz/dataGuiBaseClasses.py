@@ -38,6 +38,8 @@ while len(path)>5:
 
 
 
+from scipy.signal import welch, csd, coherence
+
 
 class dataGuiBaseClass(object):
     

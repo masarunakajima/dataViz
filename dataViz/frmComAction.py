@@ -830,7 +830,9 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
 
     def plotCsdSpectrogram(self):
         nPlotRow,nPlotColumn = 3,2
-        windex,pindexes,dataParam,processParam = self.getInitialInfo(nPlotRow=nPlotRow,nPlotColumn=nPlotColumn,lut=True)
+        windex,pindexes,dataParam,processParam = \
+        self.getInitialInfo(nPlotRow=nPlotRow, 
+                nPlotColumn=nPlotColumn,lut=True)
         if windex == None:
             return
 
@@ -838,7 +840,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         if len(dataParam)!=2:
             return
 
-        pTypeList  = [pTypeCsdSpectrogramKey, pTypeCohSpectrogramKey, pTypePhaseSpectrogramKey]
+        pTypeList  = [pTypeCsdSpectrogramKey, pTypeCohSpectrogramKey, \
+                pTypePhaseSpectrogramKey]
 
         #CSD
         dindex = self.addNewImageItem(windex, pindexes[0][0], pTypeList[0], 
@@ -857,8 +860,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist1,windex,pindexes[0][0],dindex))
         self.updateYAxis(hist1.axis)
-        self.ws[windex].sigDevicerangeChanged.connect(lambda: self.updateYAxis(hist1.axis,
-            axisScale = 5))
+        # self.ws[windex].sigDevicerangeChanged.connect(lambda: self.updateYAxis(hist1.axis,
+            # axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -884,8 +887,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist2,windex,pindexes[1][0],dindex))
         self.updateYAxis(hist2.axis)
-        self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist2.axis,
-            axisScale = 5))
+        # self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist2.axis,
+            # axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -911,8 +914,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         plot.autoBtn.clicked.connect(functools.partial(self.refreshLut,
             hist3,windex,pindexes[2][0],dindex))
         self.updateYAxis(hist3.axis)
-        self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist3.axis,
-            axisScale = 5))
+        # self.ws[windex].sigDeviceRangeChanged.connect(lambda: self.updateYAxis(hist3.axis,
+            # axisScale = 5))
 
         yAx,xAx = plot.getAxis('left'),plot.getAxis('bottom')
         self.updateXAxis(xAx)
@@ -925,8 +928,8 @@ class frmComAction(QtWidgets.QFrame, dataGuiBaseClass):
         self.ps[windex][pindexes[1][0]].setYLink(self.ps[windex][pindexes[2][0]])
 
         # self.ws[windex].sigDeviceRangeChanged.connect(functools.partial(linkMaxHeight,windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
-        self.ws[windex].sigDeviceRangeChanged.connect(lambda:
-                self.linkMaxHeight(windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
+        # self.ws[windex].sigDeviceRangeChanged.connect(lambda:
+                # self.linkMaxHeight(windex,[pindexes[0][0],pindexes[1][0],pindexes[2][0]]))
 
 
 
