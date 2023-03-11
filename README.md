@@ -40,7 +40,7 @@ or "Link XY", respectively.
 3. Parameters can also be changed, such as detrend, nperseg, and
    overlap.
 
-<img src="./images/psd.gif" style="width: 500px; height: auto;">
+<img src="./images/psd.gif" style="width: 700px; height: auto;">
 
 ## Cross spectral density
 1. Choose a shot and two channels and click "CSD". Cross spectral
@@ -49,6 +49,7 @@ or "Link XY", respectively.
    raw data.
   
    
+<img src="./images/csd.gif" style="width: 700px; height: auto;">
 
 
 
