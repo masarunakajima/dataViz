@@ -1,6 +1,23 @@
 # dataViz
 
+dataViz is a GUI for visualizing data and quick spectral analysis. 
+
+<img src="./images/home.gif" alt="home" style="width: 800px; height: auto;">
+
+
+## Requirements
+
+The following Python packages are required for this GUI:
+
+- PyQt5
+- [pyqtgraph](https://github.com/pyqtgraph/pyqtgraph)
+- scipy
+- pandas
+- numpy
+
+
 ## How to use this application
+
 1. Run the python file "dataViz/run.py". The main application window
    should appear.
 2. Click "Browse data directory" and choose the directory of choice
@@ -13,10 +30,10 @@ subdirectories will be updated.
 4. Once you choose the date directory, the application will list the
    shots. Select one or more shots and click "Load".
 
-<img src="./images/home.gif" alt="home" style="width: 800px; height: auto;">
 
 
 ## Simple plot
+
 1. Choose shot(s) in the "Loaded Shot" list and the channel(s) in the
    "Channel" list, and click "Plot" button. A window will appear with
 the plot. 
@@ -33,6 +50,7 @@ or "Link XY", respectively.
 <img src="./images/plot.gif" alt="plot" style="width: 700px; height: auto;">
 
 ## Power spectral density
+
 1. Choose a shot and a channel and click "PSD". A PSD and raw signal
    will be plotted. 
 2. You can change the region to perform PSD by changing the region of
