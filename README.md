@@ -13,7 +13,7 @@ subdirectories will be updated.
 4. Once you choose the date directory, the application will list the
    shots. Select one or more shots and click "Load".
 
-<img src="./images/home.jpg" alt="home" height="400">
+<img src="./images/home.jpg" alt="home" style="width: 700px; height: auto;">
 
 
 ## Simple plot
@@ -30,7 +30,7 @@ cell in the "Plot Layout", before clicking "Plot".
    selecting them in the "Plot Layout" and clicking "Link X", "Link Y",
 or "Link XY", respectively.
 
-<img src="./images/plot.jpg" alt="plot" height="400">
+<img src="./images/plot.jpg" alt="plot" style="width: 700px; height: auto;">
 
 ## Power spectral density
 1. Choose a shot and a channel and click "PSD". A PSD and raw signal
