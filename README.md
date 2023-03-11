@@ -13,6 +13,9 @@ subdirectories will be updated.
 4. Once you choose the date directory, the application will list the
    shots. Select one or more shots and click "Load".
 
+<img src="./images/home.jpg" alt="home" height="400">
+
+
 ## Simple plot
 1. Choose shot(s) in the "Loaded Shot" list and the channel(s) in the
    "Channel" list, and click "Plot" button. A window will appear with
@@ -27,6 +30,8 @@ cell in the "Plot Layout", before clicking "Plot".
    selecting them in the "Plot Layout" and clicking "Link X", "Link Y",
 or "Link XY", respectively.
 
+<img src="./images/plot.jpg" alt="plot" height="400">
+
 ## Power spectral density
 1. Choose a shot and a channel and click "PSD". A PSD and raw signal
    will be plotted. 
@@ -35,6 +40,11 @@ or "Link XY", respectively.
 3. Parameters can also be changed, such as detrend, nperseg, and
    overlap.
 
+<video width="640" height="360" controls>
+  <source src="./images/psd.mp4" type="video/mp4">
+  Example of analyzing power spectral density.
+</video>
+
 ## Cross spectral density
 1. Choose a shot and two channels and click "CSD". Cross spectral
    density, coherence, phase, and raw data will be displayed. 
@@ -42,3 +52,6 @@ or "Link XY", respectively.
    raw data.
   
    
+
+
+
